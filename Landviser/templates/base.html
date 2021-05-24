@@ -19,7 +19,7 @@
                 <div id="navbarMenuHeroA" class="navbar-menu">
                     <div class="navbar-end">
                         {% if current_user.is_authenticated %}
-                        <a href="{{ url_for('uploads.upload_file') }}" class="navbar-item">
+                        <a href="{{ url_for('uploads.uploads_file') }}" class="navbar-item">
                             Upload
                         </a>
                         {% endif %}
