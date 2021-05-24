@@ -12,7 +12,7 @@ Creating Enviroment:
   ```bash
     pip install virtualenv
     python -m venv env
-    env\scripts\activate.bat
+    env\Scripts\activate.bat
     pip install -r requirements.txt
   ```
   
