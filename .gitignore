@@ -1,0 +1,4 @@
+# ignore environmental folder for git push/pull
+.env39lm
+Landviser/__pycache__
+Landviser/utils/__pycache__
