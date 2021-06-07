@@ -1,135 +1,172 @@
-{% extends "base.html" %}
-{% block content %}
+{% extends "base.html" %} {% block content %}
 <style>
-    .file-form{
-        margin: auto;
-        width: 50%;
-        padding-left:200px;
+  .file-form {
+    margin: auto;
+    width: 50%;
+    padding-left: 200px;
+  }
+  .dataframe {
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+  }
+  .table-with-title {
+    margin-top: 20px;
+  }
+  .select-VES-type {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  .input-a-parameter,
+  .input-k-parameter,
+  .input-mn-parameter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .input-a,
+  .input-k,
+  .input-mn {
+    width: 100px;
+  }
+  .input-a,
+  .input-mn {
+    margin-right: 5px;
+    margin-left: 5px;
+  }
+  .input-k {
+    margin-left: 9.5px;
+  }
 
-    }
-    .dataframe{
-        margin: auto;
-        width: 50%;
-        padding:10px;
-    }
-    .table-with-title{
-            margin-top:20px;
-    }
-    .select-VES-type{
-        display:flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 10px;
-        margin-bottom: 10px;
-    }
-    .input-a-parameter, .input-k-parameter{
-        display:flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 10px;
-    }
-    .input-a, .input-k{
-        width: 100px;
-    }
-    .input-a{
-        margin-right: 5px;
-        margin-left: 5px;
-    }
-    .input-k{
-        margin-left:9.5px;
-    }
-    .tables-block{
-        display:flex;
-        justify-content:space-around;
-        margin-bottom:20px;
-    }
-
-
-
-
-
+  .tables-block {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+  }
 </style>
 
 <div class="file file-form">
-    <form action="http://localhost:5000/upload" method="POST"
-          enctype="multipart/form-data">
-        <div class="select select-VES-type">
-            <p>Select VES type: </p>
-            <select name="VES-type-select" id="VES-type-select">
-                <option value="1" id="VES-type-1">1D</option>
-                <option value="2" id="VES-type-2">2D</option>
-            </select>
-        </div>
-        <div class="select input-a-parameter" id="input-a-parameter">
-            <p>Input AB: </p>
-            <input style="visibility:hidden" class="input is-normal input-a" type="text" name="a-parameter"
-                   id="input-a"/>
-            <select name="a-mode-select" id="a-mode-select">
-                <option value="14m">14m</option>
-                <option value="30m">30m</option>
-                <option value="Custom">Custom</option>
-            </select>
-        </div>
-        <div class="select input-k-parameter" id="input-k-parameter">
-            <p>Input K: </p>
-            <input style="visibility:hidden" class="input is-normal input-k" type="text" name="k-parameter" id="input-k"/>
-            <select name="k-mode-select" id="k-mode-select">
-                <option value="K1">K1</option>
-                <option value="K2">K2</option>
-                <option value="K3">K3</option>
-                <option value="K4">K4</option>
-                <option value="K5">K5</option>
-                <option value="K6">K6</option>
-                <option value="K7">K7</option>
-                <option value="K8">K8</option>
-                <option value="K9">K9</option>
-                <option value="Custom">Custom</option>
-            </select>
-        </div>
-        <div class="file has-name is-right">
-            <label class="file-label">
-                <input class="file-input" type="file" name="file" id="uploaded-file"/>
-                <span class="file-cta">
-      <span class="file-icon">
-        <i class="fas fa-upload"></i>
-      </span>
-      <span class="file-label">
-        Choose a file…
-      </span>
-    </span>
-                <span class="file-name" id="file-name">
-                    Upload your file
-                </span>
-            </label>
-        </div>
-
-        <input type="submit" class="button is-block is-info is-large is-fullwidth"/>
-
-    </form>
+  <form
+    action="http://localhost:5000/upload"
+    method="POST"
+    enctype="multipart/form-data"
+  >
+    <div class="select select-VES-type">
+      <p>Select VES type:</p>
+      <select name="VES-type-select" id="VES-type-select">
+        <option value="1" id="VES-type-1">1D</option>
+        <option value="2" id="VES-type-2">2D</option>
+      </select>
+    </div>
+    <div class="select input-a-parameter" id="input-a-parameter">
+      <p>Input AB:</p>
+      <input
+        style="visibility: hidden"
+        class="input is-normal input-a"
+        type="text"
+        name="a-parameter"
+        id="input-a"
+      />
+      <select name="a-mode-select" id="a-mode-select">
+        <option value="14m">14m</option>
+        <option value="30m">30m</option>
+        <option value="40m">40m</option>
+        <option value="Custom">Custom</option>
+      </select>
+    </div>
+    <div class="select input-mn-parameter" id="input-mn-parameter">
+      <p>Input MN:</p>
+      <input
+        style="visibility: hidden"
+        class="input is-normal input-mn"
+        type="text"
+        name="mn-parameter"
+        id="input-mn"
+      />
+      <select name="mn-mode-select" id="mn-mode-select">
+        <option value="14m">14m</option>
+        <option value="30m">30m</option>
+        <option value="40m">40m</option>
+        <option value="Custom">Custom</option>
+      </select>
+    </div>
+    <div class="select input-k-parameter" id="input-k-parameter">
+      <p>K-set:</p>
+      <input
+        style="visibility: hidden"
+        class="input is-normal input-k"
+        type="text"
+        name="k-parameter"
+        id="input-k"
+      />
+      <select name="k-mode-select" id="k-mode-select">
+        <option value="K1">K1</option>
+        <option value="K2">K2</option>
+        <option value="K3">K3</option>
+        <option value="K4">K4</option>
+        <option value="K5">K5</option>
+        <option value="K6">K6</option>
+        <option value="K7">K7</option>
+        <option value="K8">K8</option>
+        <option value="K9">K9</option>
+        <option value="Custom">Custom</option>
+      </select>
+    </div>
+    <div class="file has-name is-right">
+      <label class="file-label">
+        <input class="file-input" type="file" name="file" id="uploaded-file" />
+        <span class="file-cta">
+          <span class="file-icon">
+            <i class="fas fa-upload"></i>
+          </span>
+          <span class="file-label"> Choose a file… </span>
+        </span>
+        <span class="file-name" id="file-name"> Upload your file </span>
+      </label>
+    </div>
+    <div>
+      <input
+        type="submit"
+        class="button is-block is-info is-large is-fullwidth"
+      />{% with messages = get_flashed_messages() %} {% if messages %}
+      <div class="notification is-danger small">{{ messages[0] }}</div>
+      {% endif %} {% endwith %}
+    </div>
+  </form>
 </div>
 {% for table in result %}
-    <div class="tables-block" style="visibility: {{ is_hidden_plot_block }}">
-        <div class="table-with-title"><span class="title">The source table is:</span><br><br>{{ table["html_of_table_before_recalculating"]|safe }}</div>
-        <div class="table-with-title"><span class="title">The recalculated table is:</span><br><br>{{ table["html_of_table_after_recalculating"]|safe }}</div>
-    </div>
-    <div style="visibility: {{ is_hidden_plot_block }}">
-        <h1 class="title">
-            1D Line plot
-        </h1>
-        <p>
-            Plot for
-        </p>
-        <img src="{{ table['path_to_upload_1d_plot'] }}" alt="Chart">
-    </div>
+<div class="tables-block" style="visibility: {{ is_hidden_plot_block }}">
+  <div class="table-with-title">
+    <span class="title">The source table is:</span><br /><br />{{
+    table["html_of_table_before_recalculating"]|safe }}
+  </div>
+  <div class="table-with-title">
+    <span class="title">The recalculated table is:</span><br /><br />{{
+    table["html_of_table_after_recalculating"]|safe }}
+    <a href="{{ url_for('uploads.download', filename = table['uid']+'.csv')}}">
+      <button class="button is-link">
+        <span>Save recalculated csv</span>
+      </button></a>
+  </div>
+</div>
+<div style="visibility: {{ is_hidden_plot_block }}">
+  <h1 class="title">1D Line plot</h1>
+  <p>Plot for</p>
+  <img src="{{ table['path_to_upload_1d_plot'] }}" alt="Chart" />
+</div>
+
 {% endfor %}
 <div style="visibility: {{ is_hidden_plot_block_2d }}">
-    <h1 class="title">
-        2D Line plot
-    </h1>
-    <p>
-        {{ plot_name }}
-    </p>
-    <img src="{{ plot_path_2d }}" alt="Chart">
+  <h1 class="title">2D Line plot</h1>
+  <p>{{ plot_name }}</p>
+  <img src="{{ plot_path_2d }}" alt="Chart" />
 </div>
-<script type="text/javascript" src="{{ url_for('static', filename='functions.js')}}"></script>
+<script
+  type="text/javascript"
+  src="{{ url_for('static', filename='functions.js')}}"
+></script>
 {% endblock %}
