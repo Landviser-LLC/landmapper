@@ -23,6 +23,15 @@ class ConstantsFor1dCalculation(Enum):
           'Custom': []}
 
 
+def concatenate_all_dataframes(list_of_dataframes):
+    # taking first dataframe as start dataframe and delete this df from list
+    initial_dataframe = list_of_dataframes.pop(0)
+    for i, df in enumerate(list_of_dataframes):
+        initial_dataframe.insert(0, f'ER-{i + 2}', df['ER-1'], True)
+        initial_dataframe.reset_index(drop=True, inplace=True)
+    return initial_dataframe
+
+
 def generate_1_calculation(path, calculation_size):
     if path is not None:
         df = pd.read_csv(path, header=None)
@@ -43,18 +52,10 @@ def filter_1d_table(df, mode=1, AB_values=None, MN_values=None, k=1):
     res_df.loc[:, 'ER-1'] = df[2].astype(float)
     res_df.loc[:, 'K-taken'] = pd.Series([k] * df[2].shape[0])
     res_df.loc[:, 'AB'] = pd.Series(AB_values)
-    if mode == 1:
-        res_df.loc[:, 'MN'] = res_df['AB'].apply(lambda x: 2 if x > 10 else 1)
-    elif mode == 2:
-        res_df.loc[:, 'MN'] = pd.Series([2] * df[2].shape[0])
-    elif mode == 4:
-        user_ab = np.array(list(map(lambda x: float(x.strip()), AB_values.split(','))))
-        res_df.loc[:, 'AB'] = user_ab
-        mn_column = pd.Series([])
-        for i in range(len(res_df['AB'])):
-            for key, value in MN_values.sort().items():
-                if res_df['AB'][i] / 2. > float(key):
-                    mn_column[i] = float(value)
+    res_df.loc[:, 'MN'] = pd.Series(MN_values)
+    if mode == 4:
+        # todo Custom calculations
+        pass
     res_df.loc[:, 'AB-half'] = res_df['AB'] / 2.
     # todo: disable scientific mode for source table
     return res_df
@@ -71,7 +72,6 @@ def recalculate_er(ab_half: float, k_set, r):
 def recalculate_table(df: pd.DataFrame):
     recalculating_columns = [col_name for col_name in df.columns if
                              df[col_name].isna().sum() == 0 and col_name.startswith('ER')]
-    # print(recalculating_columns)
     for column in recalculating_columns:
         df.loc[:, column] = df.apply(lambda row: recalculate_er(row['AB-half'], row['K-taken'], row[column]), axis=1)
         df.loc[:, column] = df[column].apply(lambda x: '{:.3f}'.format(x))
@@ -83,18 +83,15 @@ def calculate_pseudo_depth(df):
     df.loc[:, 'Pseudo-depth'] = df['AB-half'] / 1.5
 
 
-def plot_1d(df, path_to_save):
+def plot_1d(df, path_to_save, index):
     fig = plt.figure(figsize=[12, 8])
-
     ax = fig.add_subplot(111)
     ax.xaxis.tick_top()
     ax.set_xlabel('Electrical Resistivity, Ohm m', weight='bold', fontsize=13, labelpad=12)
     ax.xaxis.set_label_position('top')
     ax.set_ylabel('Pseudo-depth, m', weight='bold', fontsize=13)
     plt.ylim(df['Pseudo-depth'].max() + 5, df['Pseudo-depth'].min() - 5)
-    ax.plot(df['ER-1'].apply(lambda x: float(x)), df['Pseudo-depth'], label='ER-1', c='brown')
-    # todo: make plot of ER-# without
-    # ax.plot(df['ER-2'], df['Pseudo-depth'], label='ER-2')
+    ax.plot(df['ER-1'].apply(lambda x: float(x)), df['Pseudo-depth'], label=f'ER-{index + 1}', c='blue')
     plt.legend()
     plt.tight_layout()
     plt.savefig(path_to_save)
