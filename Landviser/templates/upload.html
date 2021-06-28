@@ -24,13 +24,27 @@
   .input-k-parameter,
   .input-mn-parameter,
   .input-measurment,
-  .input-measurment-number {
+  .input-measurment-number,
+  .dipole_distance_block,
+  .start_points_block,
+  .step_block,
+  .layers_number_block,
+  .layer-block,
+  .measurment_number_block,
+  .start_point_block,
+  .measurment_block,
+  .first_plug_block,
+  .end_plug_block,
+  .file_name_block,
+  .first_measurement_point_block {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
   }
-  .measurments-block {
+  .measurments-block,
+  .layers-block,
+  .layer_with_title_block {
     display: flex;
     flex-direction: column;
     align-items: space-between;
@@ -39,7 +53,16 @@
   .input-a,
   .input-k,
   .input-mn,
-  .input-n {
+  .input-n,
+  .input-layers-number,
+  .start_points_number_input,
+  .dipole_distance_input,.step_input,
+  .start_point_input,
+  .measurment_number_input,
+  .first_plug_input,
+  .end_plug_input,
+  .file_name_input,
+  .first_measurement_point_input {
     width: 105px;
   }
   .input-a,
@@ -177,7 +200,7 @@
     method="POST"
     enctype="multipart/form-data"
   >
-    <div class="select select-VES-type">
+    <div class="select select-VES-type" id="select-VES-type">
       <p>Select VES type:</p>
       <select name="VES-type-select" id="VES-type-select">
         <option value="1" id="VES-type-1">1D</option>
@@ -212,6 +235,7 @@
         id="input-k"
       />
       <select name="k-mode-select" id="k-mode-select">
+        <option value="K0">K0</option>
         <option value="K1">K1</option>
         <option value="K2">K2</option>
         <option value="K3">K3</option>
@@ -226,7 +250,7 @@
     </div>
     <div class="file has-name is-right">
       <label class="file-label">
-        <input class="file-input" type="file" name="file" id="uploaded-file" />
+        <input class="file-input" type="file" multiple="true" name="file" id="uploaded-file" />
         <span class="file-cta">
           <span class="file-icon">
             <i class="fas fa-upload"></i>
@@ -247,18 +271,30 @@
   </form>
 </div>
 
-<div class="tables-block" style="visibility: {{ is_hidden_plot_block }}">
+<div class="tables-block" id="tables-block" style="visibility: {{ is_hidden_plot_block }}">
   <div class="table-with-title">
     <span class="title">The recalculated table is:</span><br /><br />{{ final_df
     | safe }}
-    <a href="{{ url_for('uploads.download', filename = uid +'.csv')}}">
+    <a href="{{ url_for('uploads.download_csv', filename = uid +'.csv')}}">
       <button class="button is-link">
         <span>Save recalculated csv</span>
       </button>
     </a>
   </div>
 </div>
-<div class="slideshow-container" style="visibility: {{is_hidden_plot_block}};">
+<div class="tables-block" id="dat-block" style="visibility: {{ is_hidden_plot_block_2d }};">
+  <div class="table-with-title">
+    <span class="title">The recalculated table is:</span><br /><br />{{ final_df_2d
+    | safe }}
+    <a href="{{ url_for('uploads.download_dat', filename = uid +'.dat')}}">
+      <button class="button is-link">
+        <span>Save recalculated dat</span>
+      </button>
+    </a>
+  </div>
+</div>
+
+<div class="slideshow-container" id="slideshow-container" style="visibility: {{is_hidden_plot_block}};">
   {% for table in result %}
   <div class="mySlides fade">
     <div class="numbertext">{{ loop.index }} / {{ loop.length }}</div>
@@ -273,7 +309,7 @@
   <a class="next" onclick="plusSlides(1)">&#10095;</a>
 </div>
 <!-- The dots/circles -->
-<div style="text-align: center">
+<div style="text-align: center" id="dots-container">
   {% for i in result%}
   <span class="dot" onclick="currentSlide({{ loop.index }})"></span>
   {% endfor %}
