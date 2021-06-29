@@ -22,16 +22,48 @@
   }
   .input-a-parameter,
   .input-k-parameter,
-  .input-mn-parameter {
+  .input-mn-parameter,
+  .input-measurment,
+  .input-measurment-number,
+  .dipole_distance_block,
+  .start_points_block,
+  .step_block,
+  .layers_number_block,
+  .layer-block,
+  .measurment_number_block,
+  .start_point_block,
+  .measurment_block,
+  .first_plug_block,
+  .end_plug_block,
+  .file_name_block,
+  .first_measurement_point_block {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
   }
+  .measurments-block,
+  .layers-block,
+  .layer_with_title_block {
+    display: flex;
+    flex-direction: column;
+    align-items: space-between;
+    justify-content: space-between;
+  }
   .input-a,
   .input-k,
-  .input-mn {
-    width: 100px;
+  .input-mn,
+  .input-n,
+  .input-layers-number,
+  .start_points_number_input,
+  .dipole_distance_input,.step_input,
+  .start_point_input,
+  .measurment_number_input,
+  .first_plug_input,
+  .end_plug_input,
+  .file_name_input,
+  .first_measurement_point_input {
+    width: 105px;
   }
   .input-a,
   .input-mn {
@@ -41,11 +73,124 @@
   .input-k {
     margin-left: 9.5px;
   }
-
+  .hidden-table{
+    visibility:hidden;
+    display:none;
+  }
   .tables-block {
     display: flex;
     justify-content: space-around;
     margin-bottom: 20px;
+  }
+  * {
+    box-sizing: border-box;
+  }
+
+  /* Slideshow container */
+  .slideshow-container {
+    max-width: 1000px;
+    position: relative;
+    margin: auto;
+  }
+
+  /* Hide the images by default */
+  .mySlides {
+    display: none;
+  }
+
+  /* Next & previous buttons */
+  .prev,
+  .next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    margin-top: -22px;
+    padding: 16px;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.6s ease;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+    color: #000;
+  }
+
+  /* Position the "next button" to the right */
+  .next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+  }
+  .prev {
+    left: 0;
+  }
+  /* On hover, add a black background color with a little bit see-through */
+  .prev:hover,
+  .next:hover {
+    color: white;
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+
+  /* Caption text */
+  .text {
+    color: #f2f2f2;
+    font-size: 15px;
+    padding: 8px 12px;
+    position: absolute;
+    bottom: 8px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .numbertext {
+    color: #000;
+    font-size: 12px;
+    padding: 8px 12px;
+    position: absolute;
+    top: 0;
+  }
+
+  /* The dots/bullets/indicators */
+  .dot {
+    cursor: pointer;
+    height: 15px;
+    width: 15px;
+    margin: 0 2px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.6s ease;
+  }
+
+  .active,
+  .dot:hover {
+    background-color: #717171;
+  }
+
+  /* Fading animation */
+  .fade {
+    -webkit-animation-name: fade;
+    -webkit-animation-duration: 1.5s;
+    animation-name: fade;
+    animation-duration: 1.5s;
+  }
+
+  @-webkit-keyframes fade {
+    from {
+      opacity: 0.4;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fade {
+    from {
+      opacity: 0.4;
+    }
+    to {
+      opacity: 1;
+    }
   }
 </style>
 
@@ -55,7 +200,7 @@
     method="POST"
     enctype="multipart/form-data"
   >
-    <div class="select select-VES-type">
+    <div class="select select-VES-type" id="select-VES-type">
       <p>Select VES type:</p>
       <select name="VES-type-select" id="VES-type-select">
         <option value="1" id="VES-type-1">1D</option>
@@ -63,14 +208,7 @@
       </select>
     </div>
     <div class="select input-a-parameter" id="input-a-parameter">
-      <p>Input AB:</p>
-      <input
-        style="visibility: hidden"
-        class="input is-normal input-a"
-        type="text"
-        name="a-parameter"
-        id="input-a"
-      />
+      <p>Select AB:</p>
       <select name="a-mode-select" id="a-mode-select">
         <option value="14m">14m</option>
         <option value="30m">30m</option>
@@ -79,14 +217,7 @@
       </select>
     </div>
     <div class="select input-mn-parameter" id="input-mn-parameter">
-      <p>Input MN:</p>
-      <input
-        style="visibility: hidden"
-        class="input is-normal input-mn"
-        type="text"
-        name="mn-parameter"
-        id="input-mn"
-      />
+      <p>Select MN:</p>
       <select name="mn-mode-select" id="mn-mode-select">
         <option value="14m">14m</option>
         <option value="30m">30m</option>
@@ -95,7 +226,7 @@
       </select>
     </div>
     <div class="select input-k-parameter" id="input-k-parameter">
-      <p>K-set:</p>
+      <p>K-measured:</p>
       <input
         style="visibility: hidden"
         class="input is-normal input-k"
@@ -104,6 +235,7 @@
         id="input-k"
       />
       <select name="k-mode-select" id="k-mode-select">
+        <option value="K0">K0</option>
         <option value="K1">K1</option>
         <option value="K2">K2</option>
         <option value="K3">K3</option>
@@ -118,7 +250,7 @@
     </div>
     <div class="file has-name is-right">
       <label class="file-label">
-        <input class="file-input" type="file" name="file" id="uploaded-file" />
+        <input class="file-input" type="file" multiple="true" name="file" id="uploaded-file" />
         <span class="file-cta">
           <span class="file-icon">
             <i class="fas fa-upload"></i>
@@ -138,33 +270,51 @@
     </div>
   </form>
 </div>
-{% for table in result %}
-<div class="tables-block" style="visibility: {{ is_hidden_plot_block }}">
+
+<div class="tables-block" id="tables-block" style="visibility: {{ is_hidden_plot_block }}">
   <div class="table-with-title">
-    <span class="title">The source table is:</span><br /><br />{{
-    table["html_of_table_before_recalculating"]|safe }}
-  </div>
-  <div class="table-with-title">
-    <span class="title">The recalculated table is:</span><br /><br />{{
-    table["html_of_table_after_recalculating"]|safe }}
-    <a href="{{ url_for('uploads.download', filename = table['uid']+'.csv')}}">
+    <span class="title">The recalculated table is:</span><br /><br />{{ final_df
+    | safe }}
+    <a href="{{ url_for('uploads.download_csv', filename = uid +'.csv')}}">
       <button class="button is-link">
         <span>Save recalculated csv</span>
-      </button></a>
+      </button>
+    </a>
   </div>
 </div>
-<div style="visibility: {{ is_hidden_plot_block }}">
-  <h1 class="title">1D Line plot</h1>
-  <p>Plot for</p>
-  <img src="{{ table['path_to_upload_1d_plot'] }}" alt="Chart" />
+<div class="tables-block" id="dat-block" style="visibility: {{ is_hidden_plot_block_2d }};">
+  <div class="table-with-title">
+    <span class="title">The recalculated table is:</span><br /><br />{{ final_df_2d
+    | safe }}
+    <a href="{{ url_for('uploads.download_dat', filename = uid +'.dat')}}">
+      <button class="button is-link">
+        <span>Save recalculated dat</span>
+      </button>
+    </a>
+  </div>
 </div>
 
-{% endfor %}
-<div style="visibility: {{ is_hidden_plot_block_2d }}">
-  <h1 class="title">2D Line plot</h1>
-  <p>{{ plot_name }}</p>
-  <img src="{{ plot_path_2d }}" alt="Chart" />
+<div class="slideshow-container" id="slideshow-container" style="visibility: {{is_hidden_plot_block}};">
+  {% for table in result %}
+  <div class="mySlides fade">
+    <div class="numbertext">{{ loop.index }} / {{ loop.length }}</div>
+    <img
+      style="width: 100%"
+      src="{{ table['path_to_upload_1d_plot'] }}"
+      alt="Chart"
+    />
+  </div>
+  {% endfor %}
+  <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+  <a class="next" onclick="plusSlides(1)">&#10095;</a>
 </div>
+<!-- The dots/circles -->
+<div style="text-align: center" id="dots-container">
+  {% for i in result%}
+  <span class="dot" onclick="currentSlide({{ loop.index }})"></span>
+  {% endfor %}
+</div>
+
 <script
   type="text/javascript"
   src="{{ url_for('static', filename='functions.js')}}"
